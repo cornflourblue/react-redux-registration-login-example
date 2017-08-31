@@ -91,13 +91,12 @@ function _delete(id) {
                     dispatch(success(id));
                 },
                 error => {
-                    dispatch(failure(error));
-                    dispatch(alertActions.error(error));
+                    dispatch(failure(id, error));
                 }
             );
     };
 
     function request(id) { return { type: userConstants.DELETE_REQUEST, id } }
     function success(id) { return { type: userConstants.DELETE_SUCCESS, id } }
-    function failure(error) { return { type: userConstants.DELETE_FAILURE, error } }
+    function failure(id, error) { return { type: userConstants.DELETE_FAILURE, id, error } }
 }
