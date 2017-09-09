@@ -21,6 +21,7 @@ class HomePage extends React.Component {
                 <p>You're logged in with React!!</p>
                 <h3>All registered users:</h3>
                 {users.loading && <em>Loading users...</em>}
+                {users.error && <span className="text-danger">ERROR: {users.error}</span>}
                 {users.items &&
                     <ul>
                         {users.items.map((user, index) =>
@@ -28,8 +29,8 @@ class HomePage extends React.Component {
                                 {user.firstName + ' ' + user.lastName}
                                 {
                                     user.deleting ? <em> - Deleting...</em>
-                                        : user.deleteError ? <span className="error"> - ERROR: {user.deleteError}</span>
-                                            : <span> - <a onClick={this.handleDeleteUser(user.id)}>Delete</a></span>
+                                    : user.deleteError ? <span className="text-danger"> - ERROR: {user.deleteError}</span>
+                                    : <span> - <a onClick={this.handleDeleteUser(user.id)}>Delete</a></span>
                                 }
                             </li>
                         )}
@@ -52,4 +53,5 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps)(HomePage);
+const connectedHomePage = connect(mapStateToProps)(HomePage);
+export { connectedHomePage as HomePage };

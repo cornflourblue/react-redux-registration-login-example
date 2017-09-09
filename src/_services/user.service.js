@@ -1,4 +1,4 @@
-import { getAuthHeader } from '../_helpers';
+import { authHeader } from '../_helpers';
 
 export const userService = {
     login,
@@ -44,7 +44,7 @@ function logout() {
 function getAll() {
     const requestOptions = {
         method: 'GET',
-        headers: getAuthHeader()
+        headers: authHeader()
     };
 
     return fetch('/users', requestOptions).then(handleResponse);
@@ -53,7 +53,7 @@ function getAll() {
 function getById(id) {
     const requestOptions = {
         method: 'GET',
-        headers: getAuthHeader()
+        headers: authHeader()
     };
 
     return fetch('/users/' + _id, requestOptions).then(handleResponse);
@@ -72,7 +72,7 @@ function register(user) {
 function update(user) {
     const requestOptions = {
         method: 'PUT',
-        headers: { ...getAuthHeader(), 'Content-Type': 'application/json' },
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
         body: JSON.stringify(user)
     };
 
@@ -83,7 +83,7 @@ function update(user) {
 function _delete(id) {
     const requestOptions = {
         method: 'DELETE',
-        headers: getAuthHeader()
+        headers: authHeader()
     };
 
     return fetch('/users/' + id, requestOptions).then(handleResponse);;
