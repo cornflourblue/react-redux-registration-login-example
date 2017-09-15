@@ -51,7 +51,7 @@
                     <li><a href="#store-js">store.js</a></li>
                 </ul>
             </li>
-            <li>_reducers
+            <li><a href="#reducers-folder">_reducers</a>
                 <ul>
                     <li><a href="#alert-reducer-js">alert.reducer.ts</a></li>
                     <li><a href="#authentication-reducer-js">authentication.reducer.js</a></li>
@@ -60,7 +60,7 @@
                     <li><a href="#users-reducer-js">users.reducer.js</a></li>
                 </ul>
             </li>
-            <li>_services
+            <li><a href="#services-folder">_services</a>
                 <ul>
                     <li>index.js</li>
                     <li><a href="#user-service-js">user.service.js</a></li>
@@ -410,7 +410,13 @@ export const PrivateRoute = ({ component: Component, ...rest }) =&gt; (
 <div>&nbsp;<a name="auth-header-js"></a></div>
 <h2>React Auth Header</h2>
 <div><strong>Path: /src/_helpers/auth-header.js</strong></div>
-<p></p>
+<p>
+    Auth header is a helper function that returns an HTTP Authorization header containing the Json Web Token (JWT)
+    of the currently logged in user from local storage. If the user isn't logged in an empty object is returned.
+</p>
+<p>
+    The auth header is used to make authenticated HTTP requests to the server api using JWT authentication.
+</p>
 <pre class="brush: js;">export function authHeader() {
     // return authorization header with jwt token
     let user = JSON.parse(localStorage.getItem('user'));
@@ -426,7 +432,11 @@ export const PrivateRoute = ({ component: Component, ...rest }) =&gt; (
 <div>&nbsp;<a name="fake-backend-js"></a></div>
 <h2>React Fake / Mock Backend</h2>
 <div><strong>Path: /src/_helpers/fake-backend.js</strong></div>
-<p></p>
+<p>
+    The fake backend is used for running the example api without a server api (backend-less). It monkey patches the <code>fetch()</code> function
+    to intercept certain api requests and mimic the behaviour of a real api by managing data in browser local storage. Any requests that aren't 
+    intercepted get passed through to the real <code>fetch()</code> function.
+</p>
 <pre class="brush: js;">// array in local storage for registered users
 let users = JSON.parse(localStorage.getItem('users')) || [];
     
@@ -561,7 +571,11 @@ export function configureFakeBackend() {
 <div>&nbsp;<a name="history-js"></a></div>
 <h2>React Router History</h2>
 <div><strong>Path: /src/_helpers/history.js</strong></div>
-<p></p>
+<p>
+    The history is a custom history object used by the React Router, the reason I used a custom history
+    object instead of the built into React Router is to enable redirecting users from outside React components, for 
+    example from the user actions after successful login or registration.
+</p>
 <pre class="brush: js;">import { createBrowserHistory } from 'history';
 
 export const history = createBrowserHistory();</pre>
@@ -590,13 +604,22 @@ export const store = createStore(
 <div>&nbsp;<a name="reducers-folder"></a></div>
 <h2>Redux Reducers Folder</h2>
 <div><strong>Path: /src/_reducers</strong></div>
-<p></p>
+<p>
+    The _reducers folder contains all the Redux reducers for the project, each reducer updates a different part of the application
+    state in response to dispatched redux actions.
+</p>
+
+<p>If you're not familiar with Redux reducers you can learn about them at <a href="http://redux.js.org/docs/basics/Reducers.html" target="_blank" rel="nofollow">http://redux.js.org/docs/basics/Reducers.html</a>.</p>
 <div><a href="#projectstructure">Back to top</a></div>
 
 <div>&nbsp;<a name="alert-reducer-js"></a></div>
 <h2>Redux Alert Reducer</h2>
 <div><strong>Path: /src/_reducers/alert.reducer.js</strong></div>
-<p></p>
+<p>
+    The redux alert reducer manages the application state for alerts / toaster notifications, it updates state when an alert action 
+    is dispatched from anywhere in the application, for example when an <code>alertConstants.SUCCESS</code> action is dispatched, the reducer updates the alert state to an
+    object with <code>type: 'alert-success'</code> and <code>message: action.message</code>.
+</p>
 <pre class="brush: js;">import { alertConstants } from '../_constants';
 
 export function alert(state = {}, action) {
@@ -622,7 +645,12 @@ export function alert(state = {}, action) {
 <div>&nbsp;<a name="authentication-reducer-js"></a></div>
 <h2>Redux Authentication Reducer</h2>
 <div><strong>Path: /src/_reducers/authentication.reducer.js</strong></div>
-<p></p>
+<p>
+    The redux authentication reducer manages the state related to login (and logout) actions, on successful login the current user object and a
+    loggedIn flag are stored in the <code>authentication</code> section of the application state. On logout or login failure the authentication 
+    state is set to an empty object, and during login (between login request and success/failure) the authentication state has a loggingIn flag set 
+    to true and a user object with the details of the user that is attempting to login.
+</p>
 <pre class="brush: js;">import { userConstants } from '../_constants';
 
 let user = JSON.parse(localStorage.getItem('user'));
@@ -653,16 +681,17 @@ export function authentication(state = initialState, action) {
 <div>&nbsp;<a name="registration-reducer-js"></a></div>
 <h2>Redux Registration Reducer</h2>
 <div><strong>Path: /src/_reducers/registration.reducer.js</strong></div>
-<p></p>
+<p>
+    The redux registration reducer manages the <code>registration</code> section of the application state, as you can see there
+    isn't much to it, on registration request it just sets a <code>registering</code> flag set to true which the RegisterPage uses 
+    to show the loading spinner. On register success or failure it clears the registration state.
+</p>
 <pre class="brush: js;">import { userConstants } from '../_constants';
 
 export function registration(state = {}, action) {
   switch (action.type) {
     case userConstants.REGISTER_REQUEST:
-      return {
-        registering: true,
-        user: action.user
-      };
+      return { registering: true };
     case userConstants.REGISTER_SUCCESS:
       return {};
     case userConstants.REGISTER_FAILURE:
@@ -676,7 +705,10 @@ export function registration(state = {}, action) {
 <div>&nbsp;<a name="users-reducer-js"></a></div>
 <h2>Redux Users Reducer</h2>
 <div><strong>Path: /src/_reducers/users.reducer.js</strong></div>
-<p></p>
+<p>
+    The redux users reducer manages the <code>users</code> section of the application state which is used by the
+    HomePage to display a list of users and enable deleting of users.
+</p>
 <pre class="brush: js;">import { userConstants } from '../_constants';
 
 export function users(state = {}, action) {
@@ -732,7 +764,16 @@ export function users(state = {}, action) {
 <div>&nbsp;<a name="services-folder"></a></div>
 <h2>React + Redux Services Folder</h2>
 <div><strong>Path: /src/_services</strong></div>
-<p></p>
+<p>
+    The _services layer handles all http communication with backend apis for the application, each service encapsulates the api calls 
+    for a content type (e.g. users) and exposes methods for performing various operations (e.g. CRUD operations). 
+    Services can also have methods that don't wrap http calls, for example the <code>userService.logout()</code> method just removes
+    an item from local storage.
+</p>
+<p>
+    I like wrapping http calls and implementation details in a services layer, it provides a clean separation of concerns and simplifies
+    the redux actions (and other modules) that use the services.
+</p>
 <div><a href="#projectstructure">Back to top</a></div>
 
 <div>&nbsp;<a name="user-service-js"></a></div>
