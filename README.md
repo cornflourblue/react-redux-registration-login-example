@@ -1,4 +1,4 @@
-# Personal blog using react and redux
+# Alheimurinn personal blog using react and redux
 
 React + Redux - User Registration and Login Tutorial & Example
 
