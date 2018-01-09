@@ -1,4 +1,4 @@
-# react-redux-registration-login-example
+# Alheimurinn personal blog using react and redux
 
 React + Redux - User Registration and Login Tutorial & Example
 
