@@ -56,7 +56,7 @@ function getById(id) {
         headers: authHeader()
     };
 
-    return fetch('/users/' + _id, requestOptions).then(handleResponse);
+    return fetch('/users/' + id, requestOptions).then(handleResponse);
 }
 
 function register(user) {
