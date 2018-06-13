@@ -22,8 +22,8 @@ function login(username, password) {
                     history.push('/');
                 },
                 error => {
-                    dispatch(failure(error));
-                    dispatch(alertActions.error(error));
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
                 }
             );
     };
@@ -50,8 +50,8 @@ function register(user) {
                     dispatch(alertActions.success('Registration successful'));
                 },
                 error => {
-                    dispatch(failure(error));
-                    dispatch(alertActions.error(error));
+                    dispatch(failure(error.toString()));
+                    dispatch(alertActions.error(error.toString()));
                 }
             );
     };
@@ -68,7 +68,7 @@ function getAll() {
         userService.getAll()
             .then(
                 users => dispatch(success(users)),
-                error => dispatch(failure(error))
+                error => dispatch(failure(error.toString()))
             );
     };
 
@@ -84,12 +84,8 @@ function _delete(id) {
 
         userService.delete(id)
             .then(
-                user => { 
-                    dispatch(success(id));
-                },
-                error => {
-                    dispatch(failure(id, error));
-                }
+                user => dispatch(success(id)),
+                error => dispatch(failure(id, error.toString()))
             );
     };
 
