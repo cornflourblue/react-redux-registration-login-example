@@ -1,31 +1,20 @@
-var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.jsx',
-    output: {
-        path: path.resolve('dist'),
-        filename: 'bundle.js'
-    },
+    mode: 'development',
     resolve: {
         extensions: ['.js', '.jsx']
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?$/,
-                exclude: /(node_modules|bower_components)/,
-                loader: 'babel-loader',
-                query: {
-                    presets: ['react', 'es2015', 'stage-3']
-                }
+                loader: 'babel-loader'
             }
         ]
     },
     plugins: [new HtmlWebpackPlugin({
-        template: './src/index.html',
-        filename: 'index.html',
-        inject: 'body'
+        template: './src/index.html'
     })],
     devServer: {
         historyApiFallback: true
