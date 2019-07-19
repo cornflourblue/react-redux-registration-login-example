@@ -13,10 +13,9 @@ class App extends React.Component {
     constructor(props) {
         super(props);
 
-        const { dispatch } = this.props;
         history.listen((location, action) => {
             // clear alert on location change
-            dispatch(alertActions.clear());
+            this.props.clearAlerts();
         });
     }
 
@@ -43,12 +42,14 @@ class App extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
+function mapState(state) {
     const { alert } = state;
-    return {
-        alert
-    };
+    return { alert };
 }
 
-const connectedApp = connect(mapStateToProps)(App);
-export { connectedApp as App }; 
+const actionCreators = {
+    clearAlerts: alertActions.clear
+};
+
+const connectedApp = connect(mapState, actionCreators)(App);
+export { connectedApp as App };

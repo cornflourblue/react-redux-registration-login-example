@@ -38,9 +38,8 @@ class RegisterPage extends React.Component {
 
         this.setState({ submitted: true });
         const { user } = this.state;
-        const { dispatch } = this.props;
         if (user.firstName && user.lastName && user.username && user.password) {
-            dispatch(userActions.register(user));
+            this.props.register(user);
         }
     }
 
@@ -92,12 +91,14 @@ class RegisterPage extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
+function mapState(state) {
     const { registering } = state.registration;
-    return {
-        registering
-    };
+    return { registering };
 }
 
-const connectedRegisterPage = connect(mapStateToProps)(RegisterPage);
+const actionCreators = {
+    register: userActions.register
+}
+
+const connectedRegisterPage = connect(mapState, actionCreators)(RegisterPage);
 export { connectedRegisterPage as RegisterPage };

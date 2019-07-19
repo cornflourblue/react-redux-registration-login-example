@@ -9,7 +9,7 @@ class LoginPage extends React.Component {
         super(props);
 
         // reset login status
-        this.props.dispatch(userActions.logout());
+        this.props.logout();
 
         this.state = {
             username: '',
@@ -31,9 +31,8 @@ class LoginPage extends React.Component {
 
         this.setState({ submitted: true });
         const { username, password } = this.state;
-        const { dispatch } = this.props;
         if (username && password) {
-            dispatch(userActions.login(username, password));
+            this.props.login(username, password);
         }
     }
 
@@ -71,12 +70,15 @@ class LoginPage extends React.Component {
     }
 }
 
-function mapStateToProps(state) {
+function mapState(state) {
     const { loggingIn } = state.authentication;
-    return {
-        loggingIn
-    };
+    return { loggingIn };
 }
 
-const connectedLoginPage = connect(mapStateToProps)(LoginPage);
-export { connectedLoginPage as LoginPage }; 
+const actionCreators = {
+    login: userActions.login,
+    logout: userActions.logout
+};
+
+const connectedLoginPage = connect(mapState, actionCreators)(LoginPage);
+export { connectedLoginPage as LoginPage };
